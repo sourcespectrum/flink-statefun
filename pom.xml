@@ -73,18 +73,20 @@ under the License.
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <spotless-maven-plugin.version>1.20.0</spotless-maven-plugin.version>
         <auto-service.version>1.0-rc6</auto-service.version>
-        <protobuf.version>3.7.1</protobuf.version>
+        <protobuf.version>3.21.7</protobuf.version>
         <unixsocket.version>2.3.2</unixsocket.version>
-        <protoc-jar-maven-plugin.version>3.11.1</protoc-jar-maven-plugin.version>
-        <flink.version>1.16.2</flink.version>
+        <protoc-jar-maven-plugin.version>3.11.4</protoc-jar-maven-plugin.version>
+        <flink.version>1.17.2</flink.version>
+        <flink.binary.version>1.17</flink.binary.version>
         <scala.binary.version>2.12</scala.binary.version>
         <scala.version>2.12.7</scala.version>
         <lz4-java.version>1.8.0</lz4-java.version>
-        <flink-shaded-jackson.version>2.12.4-15.0</flink-shaded-jackson.version>
-        <slf4j-log4j12.version>1.7.32</slf4j-log4j12.version>
+        <flink-shaded-jackson.version>2.13.4-16.1</flink-shaded-jackson.version>
+        <slf4j-log4j12.version>1.7.36</slf4j-log4j12.version>
+        <guava.version>30.1.1-jre</guava.version>
         <test.unit.pattern>**/*Test.*</test.unit.pattern>
     </properties>
 
@@ -127,11 +129,25 @@ under the License.
                 flink-connector-kinesis:1.16.2 depends on jackson-databind:2.13.4
                 (via com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.13.4)
              -->
-            <dependency>
+            <!-- <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>2.13.4.2</version>
-            </dependency>
+            </dependency> -->
+          <!--
+            Pin the guava version to avoid conflicts with the kinesis connector
+          -->
+          <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
+          </dependency>
+          <!-- Resolve dependency convergence issue: flink-connector-kinesis -->
+          <dependency>
+            <groupId>org.apache.flink</groupId>
+            <artifactId>flink-shaded-force-shading</artifactId>
+            <version>16.1</version>
+          </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -347,7 +363,7 @@ under the License.
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.0.0-M2</version>
+                <version>3.2.1</version>
                 <executions>
                     <execution>
                         <id>enforce</id>

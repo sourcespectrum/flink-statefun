@@ -31,6 +31,7 @@ under the License.
 
     <properties>
         <additional-sources.dir>target/additional-sources</additional-sources.dir>
+        <flink-connector-kinesis.version>4.1.0</flink-connector-kinesis.version>
     </properties>
 
     <dependencies>
@@ -83,14 +84,14 @@ under the License.
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-kafka</artifactId>
-            <version>${flink.version}</version>
+            <version>${flink-connector-kafka.version}-${flink.binary.version}</version>
         </dependency>
 
         <!-- flink kinesis connector -->
         <dependency>
             <groupId>org.apache.flink</groupId>
             <artifactId>flink-connector-kinesis</artifactId>
-            <version>${flink.version}</version>
+            <version>${flink-connector-kinesis.version}-${flink.binary.version}</version>
         </dependency>
 
         <!-- 3rd party -->
